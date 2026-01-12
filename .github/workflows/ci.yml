@@ -1,0 +1,18 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Initialize Workflow
+        run: echo "CI pipeline initialized for NextGen DevOps Automation"
