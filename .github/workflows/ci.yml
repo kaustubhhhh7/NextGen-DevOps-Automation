@@ -7,8 +7,8 @@ on:
       - dev
 
 jobs:
-  build:
-    name: build
+  terraform_checks:
+    name: Terraform Checks
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
