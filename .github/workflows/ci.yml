@@ -28,3 +28,14 @@ jobs:
 
       - name: Initialize Workflow
         run: echo "CI pipeline initialized for NextGen DevOps Automation"
+
+  docker_build:
+    name: Docker Build & Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build Docker Image
+        run: |
+          docker build -t nextgen-devops-automation:ci -f docker/Dockerfile .
