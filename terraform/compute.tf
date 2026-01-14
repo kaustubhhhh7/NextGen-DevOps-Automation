@@ -29,15 +29,8 @@ resource "aws_instance" "web_server" {
   associate_public_ip_address = true
 
   # Bootstrap Script: Docker Installation
-  user_data = <<-EOF
-              #!/bin/bash
-              yum update -y
-              amazon-linux-extras install docker -y
-              service docker start
-              systemctl enable docker
-              usermod -a -G docker ec2-user
-              echo "NextGen DevOps Automation: Infrastructure Validation Complete. Docker installed." > /var/log/bootstrap.log
-              EOF
+  # Bootstrap Script: Docker Installation
+  user_data = file("${path.module}/scripts/user_data.sh")
 
   tags = {
     Name = "${var.environment}-validation-instance"
