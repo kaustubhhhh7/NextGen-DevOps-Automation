@@ -1,23 +1,35 @@
 version: '3.8'
 
+# NextGen DevOps Monitoring Stack
+# Services: Prometheus for metrics collection, Grafana for visualization
+
 services:
   prometheus:
-    image: prom/prometheus
-    container_name: prometheus
+    image: prom/prometheus:latest
+    container_name: nextgen-prometheus
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
       - "9090:9090"
     restart: unless-stopped
+    networks:
+      - monitoring-network
 
   grafana:
-    image: grafana/grafana
-    container_name: grafana
+    image: grafana/grafana:latest
+    container_name: nextgen-grafana
     ports:
       - "3000:3000"
     volumes:
       - grafana-storage:/var/lib/grafana
     restart: unless-stopped
+    networks:
+      - monitoring-network
+
+networks:
+  monitoring-network:
+    driver: bridge
 
 volumes:
   grafana-storage:
+    name: nextgen-grafana-data
