@@ -1,0 +1,15 @@
+# Infrastructure as Code
+.terraform/
+terraform.tfstate
+terraform.tfstate.backup
+*.tfvars
+
+# Local Artifacts & Logs
+*.log
+node_modules/
+.DS_Store
+
+# OS related
+Thumbs.db
+ehthumbs.db
+Desktop.ini
