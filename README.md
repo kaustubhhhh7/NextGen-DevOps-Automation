@@ -34,3 +34,10 @@ The project includes automated scripts for deploying the core application to Ama
 - **Deployment Script**: `scripts/deploy-ec2.sh`
 - **Rollback Script**: `scripts/rollback-ec2.sh`
 - **Guide**: [EC2 Deployment Documentation](docs/DEPLOYMENT_EC2.md)
+
+## Container Registry (ECR)
+
+Production Docker images are automatically built and pushed to Amazon ECR on every push to the `main` branch.
+
+- **Infrastructure**: `terraform/ecr.tf`
+- **Setup Guide**: [ECR Setup Guide](docs/ECR_SETUP.md)
