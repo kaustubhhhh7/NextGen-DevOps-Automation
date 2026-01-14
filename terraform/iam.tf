@@ -24,43 +24,17 @@ resource "aws_iam_role" "compute_role" {
 }
 
 # Least-Privilege Policy: Logging and ECR Read-Only
-resource "aws_iam_policy" "compute_policy" {
-  name        = "${var.environment}-compute-policy"
-  description = "Least-privilege policy for logging and container registry access"
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      # CloudWatch Logs Permission (Write-Only)
-      {
-        Effect = "Allow"
-        Action = [
-          "logs:CreateLogGroup",
-          "logs:CreateLogStream",
-          "logs:PutLogEvents",
-          "logs:DescribeLogStreams"
-        ]
-        Resource = "arn:aws:logs:*:*:*"
-      },
-      # ECR Read-Only Permissions (Future Container Pulls)
-      {
-        Effect = "Allow"
-        Action = [
-          "ecr:GetDownloadUrlForLayer",
-          "ecr:BatchGetImage",
-          "ecr:BatchCheckLayerAvailability",
-          "ecr:GetAuthorizationToken"
-        ]
-        Resource = "*" # Resource level permission limited by actions
-      }
-    ]
-  })
+# Attachment of Managed Policy for ECR Read-Only Access
+# This allows the instance to pull images from ECR without managing custom policy documents.
+resource "aws_iam_role_policy_attachment" "ecr_read_only" {
+  role       = aws_iam_role.compute_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
 }
 
-# Attachment of Policy to Role
-resource "aws_iam_role_policy_attachment" "compute_attach" {
+# Attachment of Managed Policy for CloudWatch Agent (Optional but recommended)
+resource "aws_iam_role_policy_attachment" "cloudwatch_agent" {
   role       = aws_iam_role.compute_role.name
-  policy_arn = aws_iam_policy.compute_policy.arn
+  policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
 }
 
 # IAM Instance Profile for EC2 association
