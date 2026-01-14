@@ -37,6 +37,34 @@ The deployment scripts require the following environment variables:
     - Transfer the tarball to EC2.
     - Load the image on EC2 and restart the container.
 
+## Deploy from ECR (Production Method)
+
+For production environments, it is best practice to pull the certified image directly from Amazon ECR rather than pushing a local build.
+
+### Required Environment Variables
+In addition to the standard variables above, valid AWS credentials must be set on the **local machine** (to look up regions/repos) or the script must be configured to pass them. Actually, this script relies on the **EC2 Instance Profile** or `aws configure` being run on the EC2 instance itself? 
+*Wait, looking at the script:* The `aws ecr get-login-password` runs **on the remote EC2 instance**. Therefore, the **EC2 instance must have an IAM Role** with `AmazonEC2ContainerRegistryReadOnly` permissions attached.
+
+**Variables required locally:**
+| Variable | Description |
+| :--- | :--- |
+| `AWS_REGION` | The AWS region (e.g., `us-east-1`) |
+| `ECR_REPO_URL` | Full ECR URI (e.g., `123.dkr.ecr.region.amazonaws.com/repo`) |
+
+### Execution
+```bash
+export EC2_HOST="1.2.3.4"
+export SSH_KEY_PATH="~/.ssh/key.pem"
+export AWS_REGION="us-east-1"
+export ECR_REPO_URL="123456789012.dkr.ecr.us-east-1.amazonaws.com/nextgen-devops-automation"
+
+./scripts/deploy-from-ecr-ec2.sh
+```
+
+**Troubleshooting ECR Login:**
+- **No Credentials on EC2**: If `aws ecr` fails on the remote host, ensure the EC2 instance has an **IAM Role** attached with `EC2InstanceProfile` that allows ECR pulling.
+- **Region Mismatch**: Ensure `AWS_REGION` matches where your ECR repo resides.
+
 ## How to Rollback
 
 If you need to stop the application on EC2:
