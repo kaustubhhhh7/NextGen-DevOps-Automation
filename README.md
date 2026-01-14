@@ -26,3 +26,11 @@ Deployment of comprehensive observability stacks and automated vulnerability sca
 
 ### Phase 5: AI Automation
 Integration of AI-driven operational insights, automated remediation, and intelligent resource scaling.
+
+## Deployment (EC2)
+
+The project includes automated scripts for deploying the core application to Amazon EC2. These scripts handle the local build, image transfer (Docker save/load), and remote orchestration.
+
+- **Deployment Script**: `scripts/deploy-ec2.sh`
+- **Rollback Script**: `scripts/rollback-ec2.sh`
+- **Guide**: [EC2 Deployment Documentation](docs/DEPLOYMENT_EC2.md)
